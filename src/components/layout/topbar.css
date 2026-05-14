@@ -1,0 +1,38 @@
+/* topbar.css */
+
+.topbar {
+  height: 70px;
+  background: white;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 25px;
+
+  border-bottom: 1px solid #e5e7eb;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-title {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  color: #0f172a;
+
+  margin: 0;
+}
+
+.topbar-title ion-icon {
+  font-size: 24px;
+  color: #2563eb;
+}

@@ -1,0 +1,141 @@
+/* Dashboard.css */
+
+.dashboard {
+  height: calc(100vh - 60px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+ 
+}
+
+.stat-cards {
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+ 
+}
+
+.bottom-section {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Left panel — two blocks stacked, each takes half */
+.left-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.left-panel-block {
+  flex: 1;                  /* each block takes equal half */
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.left-panel-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.left-panel-block-header h5 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.left-panel-block-body {
+  flex: 1;
+  overflow: hidden;         /* no scroll — content fits inside */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Right panel */
+.right-panel {
+  width: 360px;
+  min-width: 300px;
+  flex-shrink: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.right-panel-header {
+  padding: 8px 14px;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.right-panel-header h5 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.right-panel-body {
+
+  flex: 1;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+  min-height: 0;        /* ← critical for ResponsiveContainer to work */
+
+}
+
+/* Shared */
+.progress-track {
+  height: 4px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  overflow: hidden;
+  width: 80px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.epic-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.priority-badge {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  min-width: 32px;
+  text-align: center;
+}
+
+.status-chip { font-size: 15px; padding: 2px 8px; border-radius: 4px; }
+.status-chip.done        { background: #dcfce7; color: #166534; }
+.status-chip.in-progress { background: #dbeafe; color: #1d4ed8; }
+.status-chip.todo        { background: #f3f4f6; color: #6b7280; }
