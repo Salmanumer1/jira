@@ -1,0 +1,135 @@
+/* src/styles/tasks.css */
+
+/* ───────────────── PAGE ───────────────── */
+
+.p-3 {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* ───────────────── ADD TASK FORM ───────────────── */
+
+.border.rounded.p-3.mb-3.bg-light {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 12px !important;
+  background: #f9fafb !important;
+  padding: 16px !important;
+}
+
+/* ───────────────── TASK GRID ───────────────── */
+
+.row.g-3 {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* ───────────────── TASK CARD ───────────────── */
+
+.border.rounded.p-3.bg-white.h-100.d-flex.flex-column.gap-2 {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 14px !important;
+  background: #ffffff !important;
+
+  transition: 0.2s ease;
+  overflow: hidden;
+}
+
+.border.rounded.p-3.bg-white.h-100.d-flex.flex-column.gap-2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* ───────────────── TASK TITLE ───────────────── */
+
+.d-flex.justify-content-between.align-items-start span {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #111827;
+}
+
+/* ───────────────── BUTTONS ───────────────── */
+
+.btn-sm {
+  border-radius: 8px !important;
+}
+
+.btn-outline-danger {
+  font-size: 11px !important;
+  padding: 2px 7px !important;
+}
+
+.btn-outline-secondary {
+  font-size: 11px !important;
+  font-weight: 500;
+}
+
+/* ───────────────── INPUTS ───────────────── */
+
+.form-control-sm,
+.form-select-sm {
+  border-radius: 8px !important;
+  font-size: 12px !important;
+}
+
+/* ───────────────── SUBTASK PANEL ───────────────── */
+
+.border.rounded.p-2.bg-light.d-flex.flex-column.gap-1 {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 10px !important;
+  background: #f9fafb !important;
+
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* Scrollbar */
+
+.border.rounded.p-2.bg-light.d-flex.flex-column.gap-1::-webkit-scrollbar {
+  width: 6px;
+}
+
+.border.rounded.p-2.bg-light.d-flex.flex-column.gap-1::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+/* ───────────────── SUBTASK ITEMS ───────────────── */
+
+.py-1 {
+  border-bottom: 1px solid #f1f5f9;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+.py-1:last-child {
+  border-bottom: none;
+}
+
+/* ───────────────── CHECKBOX ───────────────── */
+
+input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* ───────────────── SUBTASK INPUT ROW ───────────────── */
+
+.d-flex.gap-1.mt-1 {
+  margin-top: 8px !important;
+}
+
+/* ───────────────── EMPTY TEXT ───────────────── */
+
+.text-muted.text-center.py-4.col-12 {
+  font-size: 14px;
+  color: #9ca3af !important;
+}
+
+/* ───────────────── RESPONSIVE ───────────────── */
+
+@media (max-width: 768px) {
+  .col-md-6.col-lg-4 {
+    width: 100%;
+  }
+}

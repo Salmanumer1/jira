@@ -1,7 +1,8 @@
 // src/pages/Tasks.jsx
 
 import { useState } from "react";
-import { tasks as initialTasks, epics } from "../data/mockData";
+import { useAppContext } from "../context/AppContext";
+import "./tasks.css";
 
 const PRIORITY_STYLES = {
   High: { background: "#fee2e2", color: "#b91c1c" },
@@ -9,10 +10,26 @@ const PRIORITY_STYLES = {
   Low:  { background: "#dcfce7", color: "#166534" },
 };
 
+const STATUS_STYLES = {
+  "In Progress": { background: "#dbeafe", color: "#1d4ed8" },
+  "To Do":       { background: "#f3f4f6", color: "#6b7280" },
+  "Done":        { background: "#dcfce7", color: "#166534" },
+};
+
 export default function Tasks() {
-  const [taskList,    setTaskList]    = useState(initialTasks);
-  const [subtaskList, setSubtaskList] = useState([]);
-  const [showForm,    setShowForm]    = useState(false);
+  const {
+    taskList,
+    epicList,
+    addTask,
+    updateTask,
+    deleteTask,
+    subtaskList,
+    addSubtask,
+    updateSubtask,
+    deleteSubtask,
+  } = useAppContext();
+
+  const [showForm,     setShowForm]     = useState(false);
   const [expandedTask, setExpandedTask] = useState(null);
   const [subtaskInput, setSubtaskInput] = useState({});
 
@@ -26,53 +43,40 @@ export default function Tasks() {
   // ── Task Actions ──────────────────────────────────────────
   const handleAddTask = () => {
     if (!form.name.trim()) return;
-    setTaskList((prev) => [
-      ...prev,
-      { id: prev.length + 1, ...form, epicId: Number(form.epicId) },
-    ]);
+    addTask({ ...form, epicId: Number(form.epicId) || null });
     setForm({ name: "", priority: "Med", status: "To Do", epicId: "" });
     setShowForm(false);
   };
 
   const handleDeleteTask = (id) => {
-    setTaskList((prev) => prev.filter((t) => t.id !== id));
-    setSubtaskList((prev) => prev.filter((s) => s.taskId !== id));
+    deleteTask(id);
   };
 
   const handleUpdateStatus = (id, status) => {
-    setTaskList((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, status } : t))
-    );
+    updateTask(id, { status });
   };
 
   // ── Subtask Actions ───────────────────────────────────────
   const handleAddSubtask = (taskId) => {
     const name = subtaskInput[taskId];
     if (!name?.trim()) return;
-    setSubtaskList((prev) => [
-      ...prev,
-      { id: prev.length + 1, taskId, name, status: "To Do" },
-    ]);
+    addSubtask({ taskId, name, status: "To Do" });
     setSubtaskInput((prev) => ({ ...prev, [taskId]: "" }));
   };
 
   const handleToggleSubtask = (id, currentStatus) => {
-    setSubtaskList((prev) =>
-      prev.map((s) =>
-        s.id === id
-          ? { ...s, status: currentStatus === "Done" ? "To Do" : "Done" }
-          : s
-      )
-    );
+    updateSubtask(id, {
+      status: currentStatus === "Done" ? "To Do" : "Done",
+    });
   };
 
   const handleDeleteSubtask = (id) => {
-    setSubtaskList((prev) => prev.filter((s) => s.id !== id));
+    deleteSubtask(id);
   };
 
   // ── Helpers ───────────────────────────────────────────────
   const getEpicName = (epicId) =>
-    epics.find((e) => e.id === epicId)?.name || "No Epic";
+    epicList.find((e) => e.id === epicId)?.name || "No Epic";
 
   const getSubtasks = (taskId) =>
     subtaskList.filter((s) => s.taskId === taskId);
@@ -112,7 +116,7 @@ export default function Tasks() {
                 onChange={(e) => setForm({ ...form, epicId: e.target.value })}
               >
                 <option value="">Select Epic (optional)</option>
-                {epics.map((epic) => (
+                {epicList.map((epic) => (
                   <option key={epic.id} value={epic.id}>
                     {epic.name}
                   </option>
@@ -160,7 +164,7 @@ export default function Tasks() {
       {/* ── Task Cards ── */}
       <div className="row g-3">
         {taskList.length === 0 && (
-          <div className="text-muted text-center py-4">
+          <div className="text-muted text-center py-4 col-12">
             No tasks yet. Click "+ Add Task" to create one.
           </div>
         )}
@@ -174,7 +178,7 @@ export default function Tasks() {
             <div key={task.id} className="col-md-6 col-lg-4">
               <div className="border rounded p-3 bg-white h-100 d-flex flex-column gap-2">
 
-                {/* Name + Delete */}
+                {/* ── Name + Delete ── */}
                 <div className="d-flex justify-content-between align-items-start">
                   <span style={{ fontSize: "14px", fontWeight: 600 }}>
                     {task.name}
@@ -188,7 +192,7 @@ export default function Tasks() {
                   </button>
                 </div>
 
-                {/* Epic Name */}
+                {/* ── Epic Name ── */}
                 <span
                   style={{
                     fontSize: "11px",
@@ -202,7 +206,7 @@ export default function Tasks() {
                   {getEpicName(task.epicId)}
                 </span>
 
-                {/* Priority + Status */}
+                {/* ── Priority + Status ── */}
                 <div className="d-flex gap-2 align-items-center">
                   <span
                     style={{
@@ -228,7 +232,34 @@ export default function Tasks() {
                   </select>
                 </div>
 
-                {/* Subtask Toggle Button */}
+                {/* ── Subtask progress bar ── */}
+                {subtasks.length > 0 && (
+                  <div>
+                    <div
+                      style={{
+                        height: "4px",
+                        background: "#e5e7eb",
+                        borderRadius: "2px",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: `${(doneSubs / subtasks.length) * 100}%`,
+                          height: "100%",
+                          background: "#5b8cf5",
+                          borderRadius: "2px",
+                          transition: "width 0.3s ease",
+                        }}
+                      />
+                    </div>
+                    <span style={{ fontSize: "10px", color: "#6b7280" }}>
+                      {doneSubs}/{subtasks.length} subtasks done
+                    </span>
+                  </div>
+                )}
+
+                {/* ── Subtask Toggle Button ── */}
                 <button
                   className="btn btn-sm btn-outline-secondary w-100"
                   style={{ fontSize: "11px" }}
@@ -242,7 +273,7 @@ export default function Tasks() {
                   )}
                 </button>
 
-                {/* Subtasks Panel */}
+                {/* ── Subtasks Panel ── */}
                 {isExpanded && (
                   <div className="border rounded p-2 bg-light d-flex flex-column gap-1">
 
@@ -255,27 +286,48 @@ export default function Tasks() {
                     {subtasks.map((sub) => (
                       <div
                         key={sub.id}
-                        className="d-flex justify-content-between align-items-center"
+                        className="d-flex justify-content-between align-items-center py-1"
                       >
                         <div className="d-flex align-items-center gap-2">
                           <input
                             type="checkbox"
                             checked={sub.status === "Done"}
-                            onChange={() => handleToggleSubtask(sub.id, sub.status)}
+                            onChange={() =>
+                              handleToggleSubtask(sub.id, sub.status)
+                            }
                           />
                           <span
                             style={{
                               fontSize: "12px",
-                              textDecoration: sub.status === "Done" ? "line-through" : "none",
-                              color: sub.status === "Done" ? "#9ca3af" : "#111",
+                              textDecoration:
+                                sub.status === "Done" ? "line-through" : "none",
+                              color:
+                                sub.status === "Done" ? "#9ca3af" : "#111",
                             }}
                           >
                             {sub.name}
                           </span>
                         </div>
+
+                        <span
+                          className="ms-2"
+                          style={{
+                            ...STATUS_STYLES[sub.status],
+                            fontSize: "10px",
+                            padding: "1px 6px",
+                            borderRadius: "4px",
+                          }}
+                        >
+                          {sub.status}
+                        </span>
+
                         <button
-                          className="btn btn-sm"
-                          style={{ fontSize: "10px", padding: "1px 6px", color: "#ef4444" }}
+                          className="btn btn-sm ms-1"
+                          style={{
+                            fontSize: "10px",
+                            padding: "1px 6px",
+                            color: "#ef4444",
+                          }}
                           onClick={() => handleDeleteSubtask(sub.id)}
                         >
                           ✕
@@ -283,7 +335,7 @@ export default function Tasks() {
                       </div>
                     ))}
 
-                    {/* Add Subtask */}
+                    {/* ── Add Subtask Input ── */}
                     <div className="d-flex gap-1 mt-1">
                       <input
                         className="form-control form-control-sm"

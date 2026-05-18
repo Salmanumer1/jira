@@ -17,9 +17,9 @@ export function AppProvider({ children }) {
   const [subtaskList, setSubtaskList] = useState([]);
   const [kanbanList,  setKanbanList]  = useState(initialTasks); // kanban reads same tasks
 
-  // ════════════════════════════════════════════════════
+  
   // PROJECTS
-  // ════════════════════════════════════════════════════
+  
 
   const addProject = (project) => {
     setProjectList((prev) => [
@@ -47,9 +47,9 @@ export function AppProvider({ children }) {
     setTaskList((prev) => prev.filter((t) => !removedEpics.includes(t.epicId)));
   };
 
-  // ════════════════════════════════════════════════════
+
   // EPICS
-  // ════════════════════════════════════════════════════
+  
 
   const addEpic = (epic) => {
     setEpicList((prev) => [
@@ -76,9 +76,9 @@ export function AppProvider({ children }) {
     setSubtaskList((prev) => prev.filter((s) => !removedTasks.includes(s.taskId)));
   };
 
-  // ════════════════════════════════════════════════════
+
   // TASKS
-  // ════════════════════════════════════════════════════
+  
 
   const addTask = (task) => {
     const newTask = {
@@ -106,9 +106,9 @@ export function AppProvider({ children }) {
     setSubtaskList((prev) => prev.filter((s) => s.taskId !== id));
   };
 
-  // ════════════════════════════════════════════════════
+ 
   // SUBTASKS
-  // ════════════════════════════════════════════════════
+
 
   const addSubtask = (subtask) => {
     setSubtaskList((prev) => [
@@ -131,18 +131,16 @@ export function AppProvider({ children }) {
     setSubtaskList((prev) => prev.filter((s) => s.id !== id));
   };
 
-  // ════════════════════════════════════════════════════
+ 
   // KANBAN — moves task between columns
-  // ════════════════════════════════════════════════════
 
   const moveKanban = (taskId, newStatus) => {
     // update both kanban and task list so dashboard stays in sync
     updateTask(taskId, { status: newStatus });
   };
 
-  // ════════════════════════════════════════════════════
   // DERIVED STATS — dashboard reads these
-  // ════════════════════════════════════════════════════
+ 
 
   const stats = {
     totalProjects:   projectList.length,
