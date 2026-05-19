@@ -10,7 +10,6 @@ export default function Sidebar() {
       <Link  className="sidebar-link" to="/epics"><ion-icon name="color-wand-outline" className="mx-2"></ion-icon>Epics</Link>
       <Link  className="sidebar-link" to="/stories"><ion-icon name="clipboard-outline" className="mx-2"></ion-icon>Stories</Link>
       <Link  className="sidebar-link" to="/tasks"><ion-icon name="library-outline" className="mx-2"></ion-icon>Tasks</Link>
-      <Link className="sidebar-link" to="/subtasks"><ion-icon name="file-tray-full-outline" className="mx-2"></ion-icon>Subtasks</Link>
       <Link className="sidebar-link" to="/kanban"><ion-icon name="albums-outline" className="mx-2"></ion-icon>Kanban</Link>
     </div>
   );

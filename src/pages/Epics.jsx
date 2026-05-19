@@ -14,6 +14,7 @@ export default function Epics() {
     epicList,
     projectList,
     taskList,
+    stories,
     addEpic,
     updateEpic,
     deleteEpic,
@@ -51,7 +52,8 @@ export default function Epics() {
 
   const getEpicTasks = (epicId) =>
     taskList.filter((t) => t.epicId === epicId);
-
+ const getEpicstories = (epicId) =>
+    stories.filter((t) => t.epicId === epicId);
   return (
     <div className="p-3">
 
@@ -132,6 +134,7 @@ export default function Epics() {
           const epicTasks    = getEpicTasks(epic.id);
           const doneTasks    = epicTasks.filter((t) => t.status === "Done").length;
           const projectColor = getProjectColor(epic.projectId);
+          const Epicstories=getEpicstories(epic.id);
 
           return (
             <div key={epic.id} className="col-md-6 col-lg-4">
@@ -249,7 +252,19 @@ export default function Epics() {
                     No tasks linked to this epic yet.
                   </p>
                 )}
-
+{(Epicstories||[]).length>0 && <div className="border rounded p-2 bg-light d-flex flex-column gap-1"  >
+  {Epicstories.map((story)=>( <div
+                        key={story.id} 
+                        // className="d-flex justify-content-between align-items-center"
+                      >
+                       <h6 style={{ fontSize: "13px", color:"#800080"}}>Story:</h6>
+                      <span style={{ fontSize: "12px", color:"red"}}>{story.title}: </span>
+                      
+                       <span style={{ fontSize: "10px" }}> {story. description}
+                       </span>
+                         
+                      </div>))}
+  </div>}
               </div>
             </div>
           );
@@ -257,4 +272,4 @@ export default function Epics() {
       </div>
     </div>
   );
-}
+} 

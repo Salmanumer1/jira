@@ -27,7 +27,7 @@ export default function App() {
               <Route path="/epics" element={<Epics />} />
               <Route path="/stories" element={<Stories />} />
               <Route path="/tasks" element={<Tasks />} />
-              <Route path="/subtasks" element={<Subtasks />} />
+              
               <Route path="/kanban" element={<Kanban />} />
             </Routes>
           </div>

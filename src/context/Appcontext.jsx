@@ -15,7 +15,8 @@ export function AppProvider({ children }) {
   const [epicList,    setEpicList]    = useState(initialEpics);
   const [taskList,    setTaskList]    = useState(initialTasks);
   const [subtaskList, setSubtaskList] = useState([]);
-  const [kanbanList,  setKanbanList]  = useState(initialTasks); // kanban reads same tasks
+  const [kanbanList,  setKanbanList]  = useState(initialTasks);
+  const[stories,setstories]=useState([]); // kanban reads same tasks
 
   
   // PROJECTS
@@ -45,6 +46,7 @@ export function AppProvider({ children }) {
     const removedEpics = epicList.filter((e) => e.projectId === id).map((e) => e.id);
     setEpicList((prev) => prev.filter((e) => e.projectId !== id));
     setTaskList((prev) => prev.filter((t) => !removedEpics.includes(t.epicId)));
+    setstories((prev)=>prev.filter((s)=>!removedEpics.includes(s.epicId)));
   };
 
 
@@ -74,6 +76,7 @@ export function AppProvider({ children }) {
     const removedTasks = taskList.filter((t) => t.epicId === id).map((t) => t.id);
     setTaskList((prev) => prev.filter((t) => t.epicId !== id));
     setSubtaskList((prev) => prev.filter((s) => !removedTasks.includes(s.taskId)));
+    setstories((prev)=>prev.filter((s)=>s.epicId!==id));
   };
 
 
@@ -131,7 +134,27 @@ export function AppProvider({ children }) {
     setSubtaskList((prev) => prev.filter((s) => s.id !== id));
   };
 
- 
+ //stories:
+ const addStory=(story)=>{
+  setstories((prev)=>[
+  ...prev,{
+    id:prev.length+1,
+    status:"To Do",
+    priority:"Med",
+    points:1,
+    createdAt: new Date().toLocaleDateString(),
+      ...story
+
+  },
+  ])
+
+ };
+ const deleteStory=(id)=>{
+setstories((prev)=>prev.filter((s)=>s.id !== id));
+ }
+ const updateStory=(id,updated)=>{
+  setstories((prev)=>prev.map((s)=>s.id==id?{...s,...updated}:s))
+ }
   // KANBAN — moves task between columns
 
   const moveKanban = (taskId, newStatus) => {
@@ -161,6 +184,7 @@ export function AppProvider({ children }) {
         taskList,
         subtaskList,
         kanbanList,
+        stories,
 
         // stats
         stats,
@@ -184,6 +208,10 @@ export function AppProvider({ children }) {
         addSubtask,
         updateSubtask,
         deleteSubtask,
+//stories
+addStory,
+updateStory,
+deleteStory,
 
         // kanban actions
         moveKanban,
