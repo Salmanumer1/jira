@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/layout/Sidebar";
-import Topbar from "./components/layout/TopBar";
+import TopBar from "./components/layout/TopBar";
 
 import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
@@ -18,7 +18,7 @@ export default function App() {
         <Sidebar />
 
         <div style={{ flex: 1 }}>
-          <Topbar name="Collabuz"/>
+          <TopBar name="Collabuz"/>
 
           <div style={{ padding: "20px" }}>
             <Routes>

@@ -1,5 +1,5 @@
 import "./topbar.css";
-export default function Topbar(props) {
+export default function TopBar(props) {
   return (
     <div className="topbar">
       <h3 className="topbar-title">
